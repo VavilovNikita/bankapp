@@ -1,4 +1,4 @@
-package com.example.bankapp.controller;
+package com.example.bankapp.dto;
 
 public class JwtResponse {
     private String token;

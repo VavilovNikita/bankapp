@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="1" author="yourname">
+    <changeSet id="1" author="nikita">
         <createTable tableName="users">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
@@ -23,7 +23,9 @@
             <column name="user_id" type="BIGINT">
                 <constraints unique="true" nullable="false"/>
             </column>
-            <column name="balance" type="NUMERIC"/>
+            <column name="balance" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="account"
@@ -32,6 +34,7 @@
                                  referencedColumnNames="id"
                                  constraintName="fk_account_user"/>
 
+        <!-- EMAIL -->
         <createTable tableName="email_data">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
@@ -67,5 +70,48 @@
                                  referencedTableName="users"
                                  referencedColumnNames="id"
                                  constraintName="fk_phone_user"/>
+
+        <sql>
+            ALTER TABLE phone_data ADD CONSTRAINT chk_phone_format
+                CHECK (phone ~ '^[0-9]{11,13}$');
+        </sql>
+
+        <!-- Sample data -->
+        <insert tableName="users">
+            <column name="id" value="1"/>
+            <column name="name" value="Иван Иванов"/>
+            <column name="date_of_birth" valueDate="1993-05-01"/>
+            <column name="password" value="supersecurepassword"/>
+        </insert>
+
+        <insert tableName="account">
+            <column name="id" value="1"/>
+            <column name="user_id" value="1"/>
+            <column name="balance" value="12345.67"/>
+        </insert>
+
+        <insert tableName="email_data">
+            <column name="id" value="1"/>
+            <column name="user_id" value="1"/>
+            <column name="email" value="ivan@example.com"/>
+        </insert>
+
+        <insert tableName="email_data">
+            <column name="id" value="2"/>
+            <column name="user_id" value="1"/>
+            <column name="email" value="ivan.work@example.com"/>
+        </insert>
+
+        <insert tableName="phone_data">
+            <column name="id" value="1"/>
+            <column name="user_id" value="1"/>
+            <column name="phone" value="79207865432"/>
+        </insert>
+
+        <insert tableName="phone_data">
+            <column name="id" value="2"/>
+            <column name="user_id" value="1"/>
+            <column name="phone" value="79876543210"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

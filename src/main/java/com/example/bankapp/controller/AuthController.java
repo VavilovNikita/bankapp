@@ -1,5 +1,6 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dto.JwtResponse;
 import com.example.bankapp.dto.LoginRequest;
 import com.example.bankapp.dto.RegisterRequest;
 import com.example.bankapp.entity.Account;
@@ -8,12 +9,10 @@ import com.example.bankapp.entity.User;
 import com.example.bankapp.repository.UserRepository;
 import com.example.bankapp.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,6 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @CacheEvict(value = { "userByEmail", "userByPhone", "emailDataByEmail", "accountByUserId" }, allEntries = true)
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (userRepository.findByEmailDataList_Email(request.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already in use");
@@ -72,4 +72,3 @@ public class AuthController {
         return ResponseEntity.ok("User registered");
     }
 }
-
