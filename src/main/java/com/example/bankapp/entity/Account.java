@@ -1,6 +1,8 @@
 package com.example.bankapp.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
 @Table(name = "account")
 public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
@@ -22,12 +25,14 @@ public class Account {
 
     private BigDecimal initialBalance;
 
-    public Account(Long id, User user, BigDecimal balance) {
+    public Account(Long id, User user, BigDecimal balance, BigDecimal initialBalance) {
         this.id = id;
         this.user = user;
         this.balance = balance;
+        this.initialBalance = initialBalance;
     }
 
+    // Конструктор по умолчанию
     public Account() {
     }
 
@@ -58,5 +63,8 @@ public class Account {
     public BigDecimal getInitialBalance() {
         return initialBalance;
     }
-}
 
+    public void setInitialBalance(BigDecimal initialBalance) {
+        this.initialBalance = initialBalance;
+    }
+}

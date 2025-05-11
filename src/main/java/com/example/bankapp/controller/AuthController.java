@@ -76,7 +76,7 @@ public class AuthController {
         Account account = new Account(
             UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE,
             user,
-            BigDecimal.ZERO
+            BigDecimal.ZERO, BigDecimal.ZERO
         );
         user.setAccount(account);
 
