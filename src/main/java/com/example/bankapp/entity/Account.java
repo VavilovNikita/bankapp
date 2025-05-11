@@ -20,6 +20,8 @@ public class Account {
 
     private BigDecimal balance;
 
+    private BigDecimal initialBalance;
+
     public Account(Long id, User user, BigDecimal balance) {
         this.id = id;
         this.user = user;
@@ -51,6 +53,10 @@ public class Account {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public BigDecimal getInitialBalance() {
+        return initialBalance;
     }
 }
 

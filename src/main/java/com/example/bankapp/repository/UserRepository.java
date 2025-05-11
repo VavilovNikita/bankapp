@@ -12,5 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmailDataList_Email(String email);
     @Cacheable(value = "userByPhone", key = "#phone")
     Optional<User> findByPhoneDataList_Phone(String phone);
+
+    Optional<User> findByName(String name);
 }
 

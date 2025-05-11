@@ -8,6 +8,9 @@ import com.example.bankapp.entity.EmailData;
 import com.example.bankapp.entity.User;
 import com.example.bankapp.repository.UserRepository;
 import com.example.bankapp.security.JwtTokenProvider;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,11 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Operation(summary = "User login", description = "Authenticates user and generates a JWT token")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully logged in"),
+        @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         Optional<User> userOpt = userRepository.findByEmailDataList_Email(request.getEmail());
@@ -40,6 +48,11 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    @Operation(summary = "User registration", description = "Registers a new user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User registered successfully"),
+        @ApiResponse(responseCode = "400", description = "Email already in use")
+    })
     @PostMapping("/register")
     @CacheEvict(value = { "userByEmail", "userByPhone", "emailDataByEmail", "accountByUserId" }, allEntries = true)
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {

@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
             .withUsername(identifier)
             .password(user.getPassword())
-            .authorities("USER") // можно сделать роли, если нужно
+            .authorities("USER")
             .accountExpired(false)
             .accountLocked(false)
             .credentialsExpired(false)
